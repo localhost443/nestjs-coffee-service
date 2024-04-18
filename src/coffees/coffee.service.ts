@@ -1,10 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Coffee } from './entities/coffee.entity';
 import { Repository } from 'typeorm';
 import { CreateCoffeeDto } from './dto/create.coffee.dto';
 import { Flavor } from './entities/flavors.entity';
-import { off } from 'process';
 import { PaginateQueryDto } from 'src/common/dto/paginate.query.dto';
 import { UpdateCoffeeDto } from './dto/update.coffee.dto';
 
@@ -18,12 +17,29 @@ export class CoffeeService {
   ) {}
 
   async findAll(paginateQuery: PaginateQueryDto) {
-    console.log(paginateQuery);
     return await this.coffeeRepository.find({
       relations: ['flavors'],
       skip: paginateQuery?.offset,
       take: paginateQuery?.limit,
     });
+  }
+
+  async remove(id: number) {
+    const coffee = await this.coffeeRepository.findOne({ where: { id } });
+    if (!coffee) throw new NotFoundException('Coffee Not Found');
+    await this.coffeeRepository.remove(coffee);
+    return coffee;
+  }
+
+  async findOne(id: number) {
+    const coffee = await this.coffeeRepository.findOne({
+      where: { id },
+      relations: ['flavors'],
+    });
+    if (!coffee) {
+      throw new NotFoundException('Coffee not found');
+    }
+    return coffee;
   }
 
   async create(createCoffeeDto: CreateCoffeeDto) {
@@ -54,17 +70,19 @@ export class CoffeeService {
   }
 
   async update(updateCoffeeDto: UpdateCoffeeDto, id: number) {
-    const flavors = updateCoffeeDto.flavors;
-    if (flavors) {
-      updateCoffeeDto.flavors = await this.createFlavors(flavors);
+    if (updateCoffeeDto?.flavors?.length !== 0 && updateCoffeeDto) {
+      updateCoffeeDto.flavors = await this.createFlavors(
+        updateCoffeeDto.flavors,
+      );
     }
-    await this.coffeeRepository.update(id, {
+    const coffee = await this.coffeeRepository.preload({
+      id: id,
       ...updateCoffeeDto,
       flavors: updateCoffeeDto.flavors,
     });
-    return await this.coffeeRepository.findOne({
-      where: { id },
-      relations: ['flavors'],
-    });
+    if (!coffee) {
+      throw new NotFoundException('Coffee not found');
+    }
+    return await this.coffeeRepository.save(coffee);
   }
 }

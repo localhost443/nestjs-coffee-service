@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -9,7 +10,6 @@ import {
 } from '@nestjs/common';
 import { CreateCoffeeDto } from './dto/create.coffee.dto';
 import { CoffeeService } from './coffee.service';
-import { query } from 'express';
 import { PaginateQueryDto } from 'src/common/dto/paginate.query.dto';
 import { UpdateCoffeeDto } from './dto/update.coffee.dto';
 
@@ -19,6 +19,16 @@ export class CoffeeController {
   @Get('/')
   async findAll(@Query() paginateQuery: PaginateQueryDto) {
     return await this.coffeeService.findAll(paginateQuery);
+  }
+
+  @Get('/:id')
+  async findOne(@Param('id') id: number) {
+    return await this.coffeeService.findOne(id);
+  }
+
+  @Delete('/:id')
+  async remove(@Param('id') id: number) {
+    return await this.coffeeService.remove(id);
   }
 
   @Post('/')
