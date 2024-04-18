@@ -1,6 +1,7 @@
 import { IsString } from 'class-validator';
+import { Flavor } from '../entities/flavors.entity';
 
-export class CoffeeDto {
+export class CreateCoffeeDto {
   @IsString()
   name: string;
 
@@ -8,5 +9,5 @@ export class CoffeeDto {
   brand: string;
 
   @IsString({ each: true })
-  flavors: string[];
+  flavors: Flavor[];
 }

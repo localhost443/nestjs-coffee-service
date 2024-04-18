@@ -1,19 +1,20 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { CoffeeServiceModule } from './coffees/coffee.module';
+import { CoffeeModule } from './coffees/coffee.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   imports: [
-    CoffeeServiceModule,
+    CoffeeModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',
       port: 3306,
       username: 'root',
       password: '',
-      database: 'coffeeShop',
+      database: 'coffeeshop',
+      autoLoadEntities: true,
       synchronize: true,
     }),
   ],

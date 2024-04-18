@@ -1,19 +1,18 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { CreateCoffeeDto } from './dto/create.coffee.dto';
+import { CoffeeService } from './coffee.service';
+import { query } from 'express';
 
 @Controller('coffee')
 export class CoffeeController {
+  constructor(private readonly coffeeService: CoffeeService) {}
   @Get('/')
-  findAll() {
-    return [
-      {
-        id: '1',
-        name: 'Coffee 1',
-        brand: 'Brand 1',
-        flavors: ['chocolate', 'vanilla'],
-      },
-      { id: '2', name: 'Coffee 2', brand: 'Brand 2', flavors: ['caramel'] },
-      { id: '3', name: 'Coffee 3', brand: 'Brand 3', flavors: ['mocha'] },
-      { id: '4', name: 'Coffee 4', brand: 'Brand 4', flavors: ['mocha'] },
-    ];
+  async findAll(@Query() paginateQuery: { limit: number; offset: number }) {
+    return await this.coffeeService.findAll(paginateQuery);
+  }
+
+  @Post('/')
+  async create(@Body() CreateCoffeeDto: CreateCoffeeDto) {
+    return await this.coffeeService.create(CreateCoffeeDto);
   }
 }
