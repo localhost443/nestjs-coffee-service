@@ -1,14 +1,14 @@
-import { IsInt, IsNotEmpty, IsNumber, IsOptional, Min } from 'class-validator';
+import { BadGatewayException } from '@nestjs/common';
+import { Type } from 'class-transformer';
+import { IsOptional, IsPositive } from 'class-validator';
 
 export class PaginateQueryDto {
   @IsOptional()
-  @IsInt()
-  @IsNotEmpty()
-  @Min(1)
+  @IsPositive()
+  @Type(() => Number)
   limit: number;
   @IsOptional()
-  @IsInt()
-  @IsNotEmpty()
-  @Min(0)
+  @IsPositive()
+  @Type(() => Number)
   offset: number;
 }
