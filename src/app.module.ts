@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { CoffeeServiceService } from './coffees/coffee.service.service';
 import { CoffeeServiceModule } from './coffees/coffee.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
