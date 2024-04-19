@@ -1,4 +1,4 @@
-import { Injectable, Module } from '@nestjs/common';
+import { Injectable, Module, Scope } from '@nestjs/common';
 import { CoffeeController } from './coffee.controller';
 import { CoffeeService } from './coffee.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -9,7 +9,9 @@ import { COFFEE_BRANDS } from './coffee.constants';
 import { DataSource } from 'typeorm';
 import { DatabaseModule } from 'src/database/database.module';
 
-@Injectable()
+@Injectable({
+  scope: Scope.DEFAULT,
+})
 export class CoffeeBrandFactory {
   create() {
     /**
