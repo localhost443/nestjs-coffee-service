@@ -7,6 +7,7 @@ import { Flavor } from './entities/flavors.entity';
 import { EventEntity } from 'src/events/entities/event.entity';
 import { COFFEE_BRANDS } from './coffee.constants';
 import { DataSource } from 'typeorm';
+import { DatabaseModule } from 'src/database/database.module';
 
 @Injectable()
 export class CoffeeBrandFactory {
@@ -18,7 +19,17 @@ export class CoffeeBrandFactory {
   }
 }
 @Module({
-  imports: [TypeOrmModule.forFeature([Coffee, Flavor, EventEntity])],
+  imports: [
+    TypeOrmModule.forFeature([Coffee, Flavor, EventEntity]),
+    DatabaseModule.register({
+      type: 'mysql',
+      host: 'localhost',
+      username: 'root',
+      password: '',
+      port: 3306,
+      database: 'hukka',
+    }),
+  ],
   controllers: [CoffeeController],
   providers: [
     CoffeeService,
@@ -26,6 +37,7 @@ export class CoffeeBrandFactory {
       provide: COFFEE_BRANDS,
       useFactory: async (dataSource: DataSource) => {
         const coffeeBrands = await Promise.all(['one', 'tow', 'three']);
+        console.log('awaiting done');
         return coffeeBrands;
       },
     },
