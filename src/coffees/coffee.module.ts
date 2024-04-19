@@ -16,14 +16,16 @@ class DevelopmentConfigService {}
   providers: [
     CoffeeService,
     {
-      provide: COFFEE_BRANDS,
-      useValue: ['body brew', 'milkshake', 'chocolate'],
+      provide: ConfigService,
+      useClass:
+        process.env?.NODE_ENV === 'PRODUCTION'
+          ? ProductionConfigService
+          : DevelopmentConfigService,
     },
   ],
   exports: [CoffeeService],
 })
 export class CoffeeModule {}
-
 
 /**
  * Example for Provide Values
