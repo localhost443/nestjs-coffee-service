@@ -23,6 +23,7 @@ class MockCoffeeService {}
 })
 export class CoffeeModule {}
 
+// class MockCoffeeService {}
 // @Module({
 //   imports: [TypeOrmModule.forFeature([Coffee, Flavor, EventEntity])],
 //   controllers: [CoffeeController],
