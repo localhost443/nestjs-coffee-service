@@ -42,6 +42,7 @@ export class CoffeeBrandFactory {
         console.log('awaiting done');
         return coffeeBrands;
       },
+      scope: Scope.DEFAULT,
     },
   ],
   exports: [CoffeeService],
