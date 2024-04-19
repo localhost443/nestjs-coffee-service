@@ -8,9 +8,11 @@ import { CoffeeRatingModule } from './coffee-rating/coffee-rating.module';
 import { DatabaseModule } from './database/database.module';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
+import { appConfig } from './config/app.config';
 @Module({
   imports: [
     ConfigModule.forRoot({
+      load: [appConfig],
       ignoreEnvFile: false,
       validationSchema: Joi.object({
         DATABASE_HOST: Joi.required(),

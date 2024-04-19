@@ -9,6 +9,7 @@ import { UpdateCoffeeDto } from './dto/update.coffee.dto';
 import { EventEntity } from 'src/events/entities/event.entity';
 import { COFFEE_BRANDS } from './coffee.constants';
 import { CoffeeBrandFactory } from './coffee.module';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class CoffeeService {
@@ -20,8 +21,10 @@ export class CoffeeService {
     private readonly dataSource: DataSource,
     @Inject(COFFEE_BRANDS)
     private readonly coffeeBrandFactory: CoffeeBrandFactory,
+    private readonly configService: ConfigService,
   ) {
     console.log(coffeeBrandFactory);
+    console.log(this.configService.get<string>('DATABASE_HOST'));
   }
 
   async findAll(paginateQuery?: PaginateQueryDto) {

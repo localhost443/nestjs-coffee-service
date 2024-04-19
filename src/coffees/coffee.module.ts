@@ -8,6 +8,7 @@ import { EventEntity } from 'src/events/entities/event.entity';
 import { COFFEE_BRANDS } from './coffee.constants';
 import { DataSource } from 'typeorm';
 import { DatabaseModule } from 'src/database/database.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Injectable({
   scope: Scope.DEFAULT,
@@ -31,6 +32,7 @@ export class CoffeeBrandFactory {
       port: 3306,
       database: 'hukka',
     }),
+    ConfigModule,
   ],
   controllers: [CoffeeController],
   providers: [
