@@ -3,20 +3,14 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CoffeeModule } from './coffees/coffee.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { dataSourceOption } from 'db/data-source';
+import { CoffeeRatingModule } from './coffee-rating/coffee-rating.module';
 
 @Module({
   imports: [
     CoffeeModule,
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: '',
-      database: 'coffeeshop',
-      autoLoadEntities: true,
-      synchronize: true,
-    }),
+    TypeOrmModule.forRoot(dataSourceOption),
+    CoffeeRatingModule,
   ],
   controllers: [AppController],
   providers: [AppService],

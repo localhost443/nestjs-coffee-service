@@ -37,6 +37,11 @@ export class CoffeeController {
     return createCoffeeDto;
   }
 
+  @Post('/:id')
+  async recommendCoffee(@Param('id') id: number) {
+    return this.coffeeService.recommendThisCoffee(id);
+  }
+
   @Patch('/:id')
   async update(
     @Body() updateCoffeeDto: UpdateCoffeeDto,

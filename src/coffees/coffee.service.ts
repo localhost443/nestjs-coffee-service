@@ -1,11 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Coffee } from './entities/coffee.entity';
-import { Repository } from 'typeorm';
+import { Repository, DataSource } from 'typeorm';
 import { CreateCoffeeDto } from './dto/create.coffee.dto';
 import { Flavor } from './entities/flavors.entity';
 import { PaginateQueryDto } from 'src/common/dto/paginate.query.dto';
 import { UpdateCoffeeDto } from './dto/update.coffee.dto';
+import { EventEntity } from 'src/events/entities/event.entity';
 
 @Injectable()
 export class CoffeeService {
@@ -14,13 +15,15 @@ export class CoffeeService {
     private readonly coffeeRepository: Repository<Coffee>,
     @InjectRepository(Flavor)
     private readonly flavorRepository: Repository<Flavor>,
+    private readonly dataSource: DataSource,
   ) {}
 
-  async findAll(paginateQuery: PaginateQueryDto) {
+  async findAll(paginateQuery?: PaginateQueryDto) {
+    const { limit = 10, offset = 0 } = paginateQuery || {};
     return await this.coffeeRepository.find({
       relations: ['flavors'],
-      skip: paginateQuery?.offset,
-      take: paginateQuery?.limit,
+      skip: offset,
+      take: limit,
     });
   }
 
@@ -84,5 +87,31 @@ export class CoffeeService {
       throw new NotFoundException('Coffee not found');
     }
     return await this.coffeeRepository.save(coffee);
+  }
+
+  async recommendThisCoffee(id: number) {
+    const coffee = await this.coffeeRepository.findOne({ where: { id } });
+    if (!coffee) throw new NotFoundException('Coffee Not Found');
+    return await this.recommendCoffee(coffee);
+  }
+
+  async recommendCoffee(coffee: Coffee) {
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    try {
+      coffee.recommendation++;
+      const event = new EventEntity();
+      event.name = 'recommend_coffee';
+      event.type = 'coffee';
+      event.payload = { coffeeId: coffee.id };
+      await queryRunner.manager.save(coffee);
+      await queryRunner.manager.save(event);
+    } catch (error) {
+      queryRunner.rollbackTransaction();
+    } finally {
+      queryRunner.release();
+    }
+    return await this.findOne(coffee.id);
   }
 }
