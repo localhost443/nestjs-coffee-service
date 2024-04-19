@@ -7,8 +7,9 @@ import { Flavor } from './entities/flavors.entity';
 import { EventEntity } from 'src/events/entities/event.entity';
 import { COFFEE_BRANDS } from './coffee.constants';
 
-class MockCoffeeService {}
-
+class ConfigService {}
+class ProductionConfigService {}
+class DevelopmentConfigService {}
 @Module({
   imports: [TypeOrmModule.forFeature([Coffee, Flavor, EventEntity])],
   controllers: [CoffeeController],
@@ -22,6 +23,24 @@ class MockCoffeeService {}
   exports: [CoffeeService],
 })
 export class CoffeeModule {}
+
+
+/**
+ * Example for Provide Values
+ */
+
+// @Module({
+//   imports: [TypeOrmModule.forFeature([Coffee, Flavor, EventEntity])],
+//   controllers: [CoffeeController],
+//   providers: [
+//     CoffeeService,
+//     {
+//       provide: COFFEE_BRANDS,
+//       useValue: ['body brew', 'milkshake', 'chocolate'],
+//     },
+//   ],
+//   exports: [CoffeeService],
+// })
 
 // class MockCoffeeService {}
 // @Module({
