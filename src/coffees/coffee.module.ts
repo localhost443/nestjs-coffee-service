@@ -16,16 +16,37 @@ class DevelopmentConfigService {}
   providers: [
     CoffeeService,
     {
-      provide: ConfigService,
-      useClass:
-        process.env?.NODE_ENV === 'PRODUCTION'
-          ? ProductionConfigService
-          : DevelopmentConfigService,
+      provide: COFFEE_BRANDS,
+      useFactory: () => ['black', 'white', 'milk', 'poison'],
     },
   ],
   exports: [CoffeeService],
 })
 export class CoffeeModule {}
+
+/**
+ * Example for provide class Provider
+ */
+
+// class ConfigService {}
+// class ProductionConfigService {}
+// class DevelopmentConfigService {}
+// @Module({
+//   imports: [TypeOrmModule.forFeature([Coffee, Flavor, EventEntity])],
+//   controllers: [CoffeeController],
+//   providers: [
+//     CoffeeService,
+//     {
+//       provide: ConfigService,
+//       useClass:
+//         process.env?.NODE_ENV === 'PRODUCTION'
+//           ? ProductionConfigService
+//           : DevelopmentConfigService,
+//     },
+//   ],
+//   exports: [CoffeeService],
+// })
+// export class CoffeeModule {}
 
 /**
  * Example for Provide Values
