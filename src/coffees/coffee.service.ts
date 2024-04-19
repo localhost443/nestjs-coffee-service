@@ -8,6 +8,7 @@ import { PaginateQueryDto } from 'src/common/dto/paginate.query.dto';
 import { UpdateCoffeeDto } from './dto/update.coffee.dto';
 import { EventEntity } from 'src/events/entities/event.entity';
 import { COFFEE_BRANDS } from './coffee.constants';
+import { CoffeeBrandFactory } from './coffee.module';
 
 @Injectable()
 export class CoffeeService {
@@ -17,8 +18,11 @@ export class CoffeeService {
     @InjectRepository(Flavor)
     private readonly flavorRepository: Repository<Flavor>,
     private readonly dataSource: DataSource,
-    @Inject(COFFEE_BRANDS) private readonly coffeeBrands: string[],
-  ) {}
+    @Inject(COFFEE_BRANDS)
+    private readonly coffeeBrandFactory: CoffeeBrandFactory,
+  ) {
+    console.log(coffeeBrandFactory);
+  }
 
   async findAll(paginateQuery?: PaginateQueryDto) {
     const { limit = 10, offset = 0 } = paginateQuery || {};

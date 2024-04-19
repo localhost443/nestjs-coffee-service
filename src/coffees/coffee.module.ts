@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Injectable, Module } from '@nestjs/common';
 import { CoffeeController } from './coffee.controller';
 import { CoffeeService } from './coffee.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -7,17 +7,26 @@ import { Flavor } from './entities/flavors.entity';
 import { EventEntity } from 'src/events/entities/event.entity';
 import { COFFEE_BRANDS } from './coffee.constants';
 
-class ConfigService {}
-class ProductionConfigService {}
-class DevelopmentConfigService {}
+@Injectable()
+export class CoffeeBrandFactory {
+  create() {
+    /**
+     * Your logic for destroying the multiverse for coffee , and bring them all here
+     */
+    return ['idiot', 'blind', 'date', 'hen', 'egg', 'cow', 'goat'];
+  }
+}
 @Module({
   imports: [TypeOrmModule.forFeature([Coffee, Flavor, EventEntity])],
   controllers: [CoffeeController],
   providers: [
     CoffeeService,
+    CoffeeBrandFactory,
     {
       provide: COFFEE_BRANDS,
-      useFactory: () => ['black', 'white', 'milk', 'poison'],
+      useFactory: (coffeeBrandFactory: CoffeeBrandFactory) =>
+        coffeeBrandFactory.create(),
+      inject: [CoffeeBrandFactory],
     },
   ],
   exports: [CoffeeService],
