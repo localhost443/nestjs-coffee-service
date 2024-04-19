@@ -6,6 +6,7 @@ import { Coffee } from './entities/coffee.entity';
 import { Flavor } from './entities/flavors.entity';
 import { EventEntity } from 'src/events/entities/event.entity';
 import { COFFEE_BRANDS } from './coffee.constants';
+import { DataSource } from 'typeorm';
 
 @Injectable()
 export class CoffeeBrandFactory {
@@ -21,17 +22,46 @@ export class CoffeeBrandFactory {
   controllers: [CoffeeController],
   providers: [
     CoffeeService,
-    CoffeeBrandFactory,
     {
       provide: COFFEE_BRANDS,
-      useFactory: (coffeeBrandFactory: CoffeeBrandFactory) =>
-        coffeeBrandFactory.create(),
-      inject: [CoffeeBrandFactory],
+      useFactory: async (dataSource: DataSource) => {
+        const coffeeBrands = await Promise.all(['one', 'tow', 'three']);
+        return coffeeBrands;
+      },
     },
   ],
   exports: [CoffeeService],
 })
 export class CoffeeModule {}
+
+/**
+ * Example of injectable service injection in ioc
+ */
+// @Injectable()
+// export class CoffeeBrandFactory {
+//   create() {
+//     /**
+//      * Your logic for destroying the multiverse for coffee , and bring them all here
+//      */
+//     return ['idiot', 'blind', 'date', 'hen', 'egg', 'cow', 'goat'];
+//   }
+// }
+// @Module({
+//   imports: [TypeOrmModule.forFeature([Coffee, Flavor, EventEntity])],
+//   controllers: [CoffeeController],
+//   providers: [
+//     CoffeeService,
+//     CoffeeBrandFactory,
+//     {
+//       provide: COFFEE_BRANDS,
+//       useFactory: (coffeeBrandFactory: CoffeeBrandFactory) =>
+//         coffeeBrandFactory.create(),
+//       inject: [CoffeeBrandFactory],
+//     },
+//   ],
+//   exports: [CoffeeService],
+// })
+// export class CoffeeModule {}
 
 /**
  * Example for provide class Provider
