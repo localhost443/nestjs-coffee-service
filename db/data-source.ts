@@ -1,5 +1,6 @@
 import { DataSource, DataSourceOptions } from 'typeorm';
-
+import { ConfigService } from '@nestjs/config';
+const configService = new ConfigService();
 const dataSourceOption: DataSourceOptions = {
   type: 'mysql',
   host: 'localhost',
