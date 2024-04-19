@@ -24,7 +24,7 @@ export class CoffeeService {
     private readonly configService: ConfigService,
   ) {
     console.log(coffeeBrandFactory);
-    console.log(this.configService.get<string>('DATABASE_HOST'));
+    console.log(this.configService.get('database'));
   }
 
   async findAll(paginateQuery?: PaginateQueryDto) {
