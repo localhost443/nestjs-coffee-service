@@ -42,8 +42,7 @@ export class CoffeeController {
 
   @Post('/:id')
   async recommendCoffee(@Param('id') id: number) {
-    return this.coffeeService.recommendThi;
-    sCoffee(id);
+    return this.coffeeService.recommendThisCoffee(id);
   }
 
   @Patch('/:id')
