@@ -19,7 +19,6 @@ import { UpdateCoffeeDto } from './dto/update.coffee.dto';
 export class CoffeeController {
   constructor(private readonly coffeeService: CoffeeService) {}
 
-  @UsePipes(ValidationPipe)
   @Get('/')
   async findAll(@Query() paginateQuery: PaginateQueryDto) {
     return await this.coffeeService.findAll(paginateQuery);
@@ -49,7 +48,7 @@ export class CoffeeController {
 
   @Patch('/:id')
   async update(
-    @Body(ValidationPipe) updateCoffeeDto: UpdateCoffeeDto,
+    @Body() updateCoffeeDto: UpdateCoffeeDto,
     @Param('id') id: number,
   ) {
     return await this.coffeeService.update(updateCoffeeDto, id);
