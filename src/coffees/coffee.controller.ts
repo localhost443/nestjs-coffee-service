@@ -15,7 +15,7 @@ import { CoffeeService } from './coffee.service';
 import { PaginateQueryDto } from 'src/common/dto/paginate.query.dto';
 import { UpdateCoffeeDto } from './dto/update.coffee.dto';
 
-@UsePipes(new ValidationPipe())
+@UsePipes(ValidationPipe)
 @Controller('coffee')
 export class CoffeeController {
   constructor(private readonly coffeeService: CoffeeService) {}
