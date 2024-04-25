@@ -16,7 +16,10 @@ import { CoffeeService } from './coffee.service';
 import { PaginateQueryDto } from 'src/common/dto/paginate.query.dto';
 import { UpdateCoffeeDto } from './dto/update.coffee.dto';
 import { PublicRoute } from 'src/common/decorators/public.decorator';
+import { PersonalParseIntPipe } from 'src/common/pipes/personal-parse-int.pipe';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('coffee')
 @Controller('coffee')
 export class CoffeeController {
   constructor(private readonly coffeeService: CoffeeService) {}
@@ -26,9 +29,10 @@ export class CoffeeController {
     return await this.coffeeService.findAll(paginateQuery);
   }
 
+  @ApiResponse({ status: 403, description: 'Forbidden' })
   @PublicRoute()
   @Get('/:id')
-  async findOne(@Param('id') id: number) {
+  async findOne(@Param('id', PersonalParseIntPipe) id: number) {
     return await this.coffeeService.findOne(id);
   }
 

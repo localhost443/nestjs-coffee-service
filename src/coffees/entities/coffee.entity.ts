@@ -8,6 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Flavor } from './flavors.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity({ name: 'coffee' })
 export class Coffee {
