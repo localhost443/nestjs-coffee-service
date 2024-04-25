@@ -7,6 +7,7 @@ import {
   Patch,
   Post,
   Query,
+  SetMetadata,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -14,6 +15,7 @@ import { CreateCoffeeDto } from './dto/create.coffee.dto';
 import { CoffeeService } from './coffee.service';
 import { PaginateQueryDto } from 'src/common/dto/paginate.query.dto';
 import { UpdateCoffeeDto } from './dto/update.coffee.dto';
+import { PublicRoute } from 'src/common/decorators/public.decorator';
 
 @Controller('coffee')
 export class CoffeeController {
@@ -24,6 +26,7 @@ export class CoffeeController {
     return await this.coffeeService.findAll(paginateQuery);
   }
 
+  @PublicRoute()
   @Get('/:id')
   async findOne(@Param('id') id: number) {
     return await this.coffeeService.findOne(id);

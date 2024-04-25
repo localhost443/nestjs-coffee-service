@@ -10,6 +10,7 @@ import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
 import { appConfig } from './config/app.config';
 import { APP_PIPE } from '@nestjs/core';
+import { CommonModule } from './common/common.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -19,6 +20,7 @@ import { APP_PIPE } from '@nestjs/core';
         DATABASE_HOST: Joi.required(),
         DATABASE_POST: Joi.number().default(3306),
         DATABASE_USERNAME: Joi.required(),
+        API_KEY: Joi.string(),
       }),
     }),
     CoffeeModule,
@@ -35,6 +37,7 @@ import { APP_PIPE } from '@nestjs/core';
     }),
     CoffeeRatingModule,
     DatabaseModule,
+    CommonModule,
   ],
   controllers: [AppController],
   providers: [
