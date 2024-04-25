@@ -49,7 +49,7 @@ export class CoffeeController {
 
   @Patch('/:id')
   async update(
-    @Body() updateCoffeeDto: UpdateCoffeeDto,
+    @Body(ValidationPipe) updateCoffeeDto: UpdateCoffeeDto,
     @Param('id') id: number,
   ) {
     return await this.coffeeService.update(updateCoffeeDto, id);
