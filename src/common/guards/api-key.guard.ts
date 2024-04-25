@@ -7,12 +7,11 @@ import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
 @Injectable()
 export class ApiKeyGuard implements CanActivate {
   constructor(private readonly reflector: Reflector) {}
-
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
-    console.log(context.getHandler());
-    // const isPublic = this.reflector.get(IS_PUBLIC_KEY, context.getHandler());
+    const isPublic = this.reflector.get(IS_PUBLIC_KEY, context.getHandler());
+    if (isPublic) return true;
     const request = context.switchToHttp().getRequest<Request>();
     console.log(request.url);
     const api_header = request.headers['api-key'];
