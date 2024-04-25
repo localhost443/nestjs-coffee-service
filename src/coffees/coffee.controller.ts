@@ -7,12 +7,15 @@ import {
   Patch,
   Post,
   Query,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { CreateCoffeeDto } from './dto/create.coffee.dto';
 import { CoffeeService } from './coffee.service';
 import { PaginateQueryDto } from 'src/common/dto/paginate.query.dto';
 import { UpdateCoffeeDto } from './dto/update.coffee.dto';
 
+@UsePipes(new ValidationPipe())
 @Controller('coffee')
 export class CoffeeController {
   constructor(private readonly coffeeService: CoffeeService) {}
@@ -39,7 +42,8 @@ export class CoffeeController {
 
   @Post('/:id')
   async recommendCoffee(@Param('id') id: number) {
-    return this.coffeeService.recommendThisCoffee(id);
+    return this.coffeeService.recommendThi;
+    sCoffee(id);
   }
 
   @Patch('/:id')
