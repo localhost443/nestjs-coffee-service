@@ -9,9 +9,11 @@ import { COFFEE_BRANDS } from './coffee.constants';
 import { DataSource } from 'typeorm';
 import { DatabaseModule } from 'src/database/database.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { CoffeeService } from './coffee.service';
 
 @Injectable({
   scope: Scope.DEFAULT,
+  providers: [CoffeeService],
 })
 export class CoffeeBrandFactory {
   create() {

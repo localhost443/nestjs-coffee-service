@@ -1,3 +1,7 @@
+import { Injectable } from '@nestjs/common';
+
+@Injectable()
+export class CoffeeService {}
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Coffee } from './entities/coffee.entity';
